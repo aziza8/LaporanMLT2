@@ -1,4 +1,4 @@
-# Laporan Proyek Machine Learning - Nama Anda
+# Laporan Proyek Machine Learning - Miftahus Sholihin
 
 ## Project Overview
 
@@ -18,19 +18,13 @@ Bagian laporan ini mencakup:
 
 ### Problem Statements
 
-Menjelaskan pernyataan masalah:
-- Pernyataan Masalah 1
-- Pernyataan Masalah 2
-- Pernyataan Masalah n
+- Bagaimana memahami preferensi pengguna berdasarkan pola rating yang diberikan terhadap berbagai film?
+- Bagaimana membangun model rekomendasi yang mampu memberikan saran personalisasi secara akurat?- 
 
 ### Goals
 
-Menjelaskan tujuan proyek yang menjawab pernyataan masalah:
-- Jawaban pernyataan masalah 1
-- Jawaban pernyataan masalah 2
-- Jawaban pernyataan masalah n
-
-Semua poin di atas harus diuraikan dengan jelas. Anda bebas menuliskan berapa pernyataan masalah dan juga goals yang diinginkan.
+- Menggunakan data rating untuk memahami pola preferensi pengguna terhadap berbagai genre dan film, sehingga dapat digunakan sebagai dasar untuk rekomendasi personalisasi.
+- Membangun dan mengimplementasikan model rekomendasi, baik berbasis collaborative filtering, content-based filtering, maupun pendekatan hibrid, untuk menghasilkan rekomendasi yang relevan dan akurat.
 
 **Rubrik/Kriteria Tambahan (Opsional)**:
 - Menambahkan bagian “Solution Approach” yang menguraikan cara untuk meraih goals. Bagian ini dibuat dengan ketentuan sebagai berikut: 
@@ -39,6 +33,24 @@ Semua poin di atas harus diuraikan dengan jelas. Anda bebas menuliskan berapa pe
     - Mengajukan 2 atau lebih solution approach (algoritma atau pendekatan sistem rekomendasi).
 
 ## Data Understanding
+Untuk membangun sistem rekomendasi yang efektif, penting untuk memahami karakteristik dataset yang akan digunakan. Proyek ini memanfaatkan dua dataset utama: movies.csv dan ratings.csv. Berikut adalah analisis terhadap kedua dataset:
+1. Dataset movies.csv
+Dataset ini berisi informasi tentang film, mencakup:
+- Jumlah Entitas: 9,742 film.
+- Kolom Utama:
+  - movieId: ID unik untuk setiap film.
+  - title: Judul film beserta tahun rilis (contoh: "Toy Story (1995)").
+  - genres: Genre film, dengan kemungkinan beberapa genre dipisahkan oleh tanda | (contoh: "Animation|Children|Comedy").
+ 
+2. Dataset ratings.csv
+Dataset ini mencatat interaksi pengguna dengan film melalui penilaian.
+- Jumlah Entitas: 100,836 interaksi pengguna.
+- Kolom Utama:
+  - userId: ID unik pengguna yang memberikan rating.
+  - movieId: ID film yang dirating (menghubungkan dengan dataset movies.csv).
+  - rating: Rating yang diberikan oleh pengguna (skala 0.5 hingga 5.0, kemungkinan increment 0.5).
+  - timestamp: Waktu pemberian rating dalam format UNIX timestamp.
+
 Paragraf awal bagian ini menjelaskan informasi mengenai jumlah data, kondisi data, dan informasi mengenai data yang digunakan. Sertakan juga sumber atau tautan untuk mengunduh dataset. Contoh: [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data).
 
 Selanjutnya, uraikanlah seluruh variabel atau fitur pada data. Sebagai contoh:  
