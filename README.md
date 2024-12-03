@@ -1,36 +1,25 @@
 # Laporan Proyek Machine Learning - Miftahus Sholihin
 
 ## Project Overview
+Sistem rekomendasi menjadi salah satu teknologi penting dalam dunia digital saat ini, terutama dalam platform berbasis hiburan seperti film dan musik. Dalam konteks platform streaming film, pemahaman terhadap preferensi pengguna adalah kunci untuk menyediakan pengalaman yang lebih personal dan relevan. Banyak pengguna yang merasa kewalahan dengan banyaknya pilihan film yang tersedia, dan tanpa bantuan sistem rekomendasi yang baik, mereka mungkin kesulitan menemukan film yang sesuai dengan selera mereka. Oleh karena itu, pengembangan sistem rekomendasi yang efektif dan akurat sangat penting untuk meningkatkan pengalaman pengguna dan retensi platform.
 
-Pada bagian ini, Kamu perlu menuliskan latar belakang yang relevan dengan proyek yang diangkat.
-
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Jelaskan mengapa proyek ini penting untuk diselesaikan.
-- Menyertakan hasil riset terkait atau referensi. Referensi yang diberikan harus berasal dari sumber yang kredibel dan author yang jelas.
-  
-  Format Referensi: [Judul Referensi](https://scholar.google.com/) 
 
 ## Business Understanding
-
-Pada bagian ini, Anda perlu menjelaskan proses klarifikasi masalah.
-
-Bagian laporan ini mencakup:
+Dalam industri hiburan digital, platform streaming film menghadapi tantangan besar dalam menarik dan mempertahankan pengguna. Salah satu cara untuk meningkatkan pengalaman pengguna dan menjaga tingkat retensi yang tinggi adalah dengan menawarkan rekomendasi film yang relevan dan personal. Dengan begitu banyak pilihan film yang tersedia, pengguna sering kali merasa kesulitan memilih film yang sesuai dengan preferensi mereka. Oleh karena itu, pengembangan sistem rekomendasi yang dapat memberikan saran yang akurat dan sesuai dengan minat pengguna menjadi sangat penting.
 
 ### Problem Statements
 
 - Bagaimana memahami preferensi pengguna berdasarkan pola rating yang diberikan terhadap berbagai film?
-- Bagaimana membangun model rekomendasi yang mampu memberikan saran personalisasi secara akurat?- 
+- Bagaimana membangun model rekomendasi yang mampu memberikan saran personalisasi secara akurat?
 
 ### Goals
 
 - Menggunakan data rating untuk memahami pola preferensi pengguna terhadap berbagai genre dan film, sehingga dapat digunakan sebagai dasar untuk rekomendasi personalisasi.
 - Membangun dan mengimplementasikan model rekomendasi, baik berbasis collaborative filtering, content-based filtering, maupun pendekatan hibrid, untuk menghasilkan rekomendasi yang relevan dan akurat.
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Menambahkan bagian “Solution Approach” yang menguraikan cara untuk meraih goals. Bagian ini dibuat dengan ketentuan sebagai berikut: 
-
     ### Solution statements
-    - Mengajukan 2 atau lebih solution approach (algoritma atau pendekatan sistem rekomendasi).
+    - Memahami Preferensi Pengguna Berdasarkan Pola Rating.
+    - Membangun Model Rekomendasi yang Memberikan Saran Personalisasi Secara Akurat.
 
 ## Data Understanding
 Untuk membangun sistem rekomendasi yang efektif, penting untuk memahami karakteristik dataset yang akan digunakan. Proyek ini memanfaatkan dua dataset utama: movies.csv dan ratings.csv. Berikut adalah analisis terhadap kedua dataset:
@@ -51,42 +40,30 @@ Dataset ini mencatat interaksi pengguna dengan film melalui penilaian.
   - rating: Rating yang diberikan oleh pengguna (skala 0.5 hingga 5.0, kemungkinan increment 0.5).
   - timestamp: Waktu pemberian rating dalam format UNIX timestamp.
 
-Paragraf awal bagian ini menjelaskan informasi mengenai jumlah data, kondisi data, dan informasi mengenai data yang digunakan. Sertakan juga sumber atau tautan untuk mengunduh dataset. Contoh: [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data).
-
-Selanjutnya, uraikanlah seluruh variabel atau fitur pada data. Sebagai contoh:  
-
-Variabel-variabel pada Restaurant UCI dataset adalah sebagai berikut:
-- accepts : merupakan jenis pembayaran yang diterima pada restoran tertentu.
-- cuisine : merupakan jenis masakan yang disajikan pada restoran.
-- dst
-
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Melakukan beberapa tahapan yang diperlukan untuk memahami data, contohnya teknik visualisasi data beserta insight atau exploratory data analysis.
-
 ## Data Preparation
-Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
-
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan proses data preparation yang dilakukan
-- Menjelaskan alasan mengapa diperlukan tahapan data preparation tersebut.
+Proses data preparation ini melibatkan pembersihan data, transformasi, dan penggabungan informasi yang relevan untuk memastikan data siap digunakan dalam analisis dan model rekomendasi.
+- Setelah memahami data, langkah berikutnya adalah membersihkan data dari duplikat, data yang hilang (missing values), atau data yang tidak relevan. Pembersihan ini penting untuk memastikan bahwa model rekomendasi yang dibangun tidak terpengaruh oleh data yang cacat.
+- preparation juga dilakukan dengan menghapus tahun pada kolom titel dan membuat kolom baru untuk menampung data tahun tersebut.
+- Karena kita bekerja dengan dua dataset terpisah (film dan rating), kita perlu menggabungkan informasi dari kedua dataset untuk mendapatkan wawasan yang lebih lengkap. Penggabungan ini akan memungkinkan kita untuk mengetahui film apa yang telah diberi rating oleh pengguna.
+- Setelah penggabungan, kita perlu menyusun kolom dan format data agar lebih mudah digunakan dalam pemodelan. Misalnya, kita dapat mengonversi kolom timestamp menjadi format tanggal yang lebih mudah dibaca, serta memeriksa apakah kolom lainnya sudah dalam format yang tepat.
 
 ## Modeling
-Tahapan ini membahas mengenai model sisten rekomendasi yang Anda buat untuk menyelesaikan permasalahan. Sajikan top-N recommendation sebagai output.
+Pada proyek ini dua pendekatan digunakan untuk membuat sistem rekomendasi yaitu:
+1. conten based
+2. colaborative filtering
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menyajikan dua solusi rekomendasi dengan algoritma yang berbeda.
-- Menjelaskan kelebihan dan kekurangan dari solusi/pendekatan yang dipilih.
+Berikut ini adalah code yang digunakan untuk melatih model yang sudah dibaut
+''' pyhton history = model.fit(
+    x = x_train,
+    y = y_train,
+    batch_size = 32,
+    epochs = 100,
+    validation_data = (x_val, y_val)
+)
+'''
 
 ## Evaluation
-Pada bagian ini Anda perlu menyebutkan metrik evaluasi yang digunakan. Kemudian, jelaskan hasil proyek berdasarkan metrik evaluasi tersebut.
+Dalam proyek ini, evaluasi dilakukan untuk memastikan bahwa rekomendasi yang dihasilkan relevan, akurat, dan memenuhi kebutuhan pengguna. Berikut adalah rincian pendekatan evaluasi yang digunakan:
+1. Root Mean Squared Error (RMSE): Mengukur perbedaan antara rating yang diprediksi dengan rating aktual yang diberikan pengguna.
 
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
-
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
-
-**---Ini adalah bagian akhir laporan---**
-
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
+ Kemudian dilakukan proses pengujian, hasil dari pengujian ini ditampilkan 10 judul film yang sesuai.
