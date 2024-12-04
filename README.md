@@ -39,6 +39,11 @@ Dataset ini mencatat interaksi pengguna dengan film melalui penilaian.
   - movieId: ID film yang dirating (menghubungkan dengan dataset movies.csv).
   - rating: Rating yang diberikan oleh pengguna (skala 0.5 hingga 5.0, kemungkinan increment 0.5).
   - timestamp: Waktu pemberian rating dalam format UNIX timestamp.
+3.  Analisis Kualitas Data
+    a. Missing Values
+        - Dataset `movies.csv` tidak memiliki missing values berdasarkan hasil `movies_df.isna().sum()`.
+        - Dataset `ratings.csv` juga tidak ditemukan missing values (`ratings_df.isna().sum()`).
+ 
 
 ## Data Preparation
 Proses data preparation ini melibatkan pembersihan data, transformasi, dan penggabungan informasi yang relevan untuk memastikan data siap digunakan dalam analisis dan model rekomendasi.
