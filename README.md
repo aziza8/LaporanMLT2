@@ -47,10 +47,19 @@ Dataset ini mencatat interaksi pengguna dengan film melalui penilaian.
 
 ## Data Preparation
 Proses data preparation ini melibatkan pembersihan data, transformasi, dan penggabungan informasi yang relevan untuk memastikan data siap digunakan dalam analisis dan model rekomendasi.
-- Setelah memahami data, langkah berikutnya adalah membersihkan data dari duplikat, data yang hilang (missing values), atau data yang tidak relevan. Pembersihan ini penting untuk memastikan bahwa model rekomendasi yang dibangun tidak terpengaruh oleh data yang cacat.
-- preparation juga dilakukan dengan menghapus tahun pada kolom titel dan membuat kolom baru untuk menampung data tahun tersebut.
-- Karena kita bekerja dengan dua dataset terpisah (film dan rating), kita perlu menggabungkan informasi dari kedua dataset untuk mendapatkan wawasan yang lebih lengkap. Penggabungan ini akan memungkinkan kita untuk mengetahui film apa yang telah diberi rating oleh pengguna.
-- Setelah penggabungan, kita perlu menyusun kolom dan format data agar lebih mudah digunakan dalam pemodelan. Misalnya, kita dapat mengonversi kolom timestamp menjadi format tanggal yang lebih mudah dibaca, serta memeriksa apakah kolom lainnya sudah dalam format yang tepat.
+- Ekstraksi tahun dengan pola fleksibel
+  
+  Proses pertama adalah mengekstraksi informasi tahun dari judul film menggunakan metode str.extract() dengan pola regex (\d{4}). Pola ini mencari angka dengan format 4 digit, seperti tahun 1994 atau 2020, yang kemudian disimpan ke dalam kolom baru bernama year. Jika judul tidak mengandung format tahun, nilai di kolom year akan menjadi NaN. Selanjutnya, kode membersihkan kolom title dengan menghapus informasi tahun yang ada dalam tanda kurung, seperti (1994), menggunakan str.replace() dengan pola regex \(\d{4}\). Setelah penghapusan, metode str.strip() digunakan untuk menghilangkan spasi tambahan di awal atau akhir judul. Hasil akhir dari proses ini adalah kolom title yang hanya berisi nama film tanpa tahun, sementara informasi tahun dipindahkan ke kolom year. Transformasi ini membuat data lebih terstruktur dan memudahkan analisis, seperti distribusi film berdasarkan tahun atau manipulasi data judul tanpa gangguan informasi tambahan.
+- Konversi fitur timestamp menjadi waktu berbasis detik.
+- Menggabungkan dataframe movie_df dan ratings_df.
+- Konversi movieId, title dan genres menjadi list.
+- Membuat dataframe baru movie_dict yang terdiri dari id, movie_name dan genre.
+- Mengubah userId menjadi unique list dan encoding userId.
+- Mengubah movieId menjadi unique list dan encoding movieId.
+- Mapping userId ke dataframe user dan movieId ke dataframe movie.
+- Data split.
+- TF-IDF.
+
 
 ## Modeling
 Pada proyek ini dua pendekatan digunakan untuk membuat sistem rekomendasi yaitu:
