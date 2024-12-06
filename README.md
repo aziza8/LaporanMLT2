@@ -40,10 +40,17 @@ Dataset ini mencatat interaksi pengguna dengan film melalui penilaian.
   - rating: Rating yang diberikan oleh pengguna (skala 0.5 hingga 5.0, kemungkinan increment 0.5).
   - timestamp: Waktu pemberian rating dalam format UNIX timestamp.
 3.  Analisis Kualitas Data
-    a. Missing Values
+    - Missing Values
         - Dataset `movies.csv` tidak memiliki missing values berdasarkan hasil `movies_df.isna().sum()`.
         - Dataset `ratings.csv` juga tidak ditemukan missing values (`ratings_df.isna().sum()`).
- 
+    - Duplicate Values
+      - Perintah movies_df.duplicated().sum() digunakan untuk menghitung jumlah baris duplikat dalam DataFrame movies_df.  Fungsi ini mengembalikan sebuah Series Boolean yang menunjukkan apakah setiap baris dalam DataFrame merupakan duplikat dari baris sebelumnya. Baris yang memiliki nilai True adalah duplikat, sementara baris yang False adalah baris yang unik. Secara keseluruhan tidak ada duplicate pada data movies_df.
+      - Perintah ratings_df.duplicated().sum() digunakan untuk menghitung jumlah baris duplikat dalam DataFrame ratings_df, yang biasanya berisi data tentang rating yang diberikan oleh pengguna pada berbagai film. Fungsi ini memeriksa setiap baris dalam DataFrame ratings_df dan mengembalikan sebuah Series Boolean yang menunjukkan apakah baris tersebut duplikat atau tidak. Baris yang dianggap duplikat adalah baris yang memiliki nilai yang sama persis dengan baris sebelumnya (baik itu ID pengguna, ID film, atau rating yang diberikan). Hasilnya adalah True jika baris tersebut duplikat dan False jika tidak. Secara keseluruhan tidak ada duplicate pada data ratings_df.
+    - Proses visualisasi outlier pada kolom rating menggunakan boxplot bertujuan untuk mendeteksi nilai-nilai yang berada di luar rentang yang dianggap normal dalam dataset. Gambar 1 adalah oulier data rating.
+    <details>
+        <summary>Lihat Gambar</summary>
+    </details>
+![Pie chart](https://github.com/aziza8/LaporanMLT2/blob/main/outlier.png?raw=true)
 
 ## Data Preparation
 Proses data preparation ini melibatkan pembersihan data, transformasi, dan penggabungan informasi yang relevan untuk memastikan data siap digunakan dalam analisis dan model rekomendasi.
@@ -213,14 +220,22 @@ Pada proyek ini dua pendekatan digunakan untuk membuat sistem rekomendasi yaitu:
     - Setelah itu, film dengan tingkat kesamaan tertinggi diambil berdasarkan indeks ini. Variabel closest menyimpan nama-nama film dengan kesamaan tertinggi, tetapi nama film yang menjadi referensi (movie_name) dihapus dari daftar rekomendasi menggunakan metode .drop(movie_name, errors='ignore'). Langkah terakhir, daftar film terdekat ini digabungkan dengan informasi tambahan dari dataframe items menggunakan metode .merge(items) untuk menampilkan nama film dan genre-nya. Fungsi mengembalikan hasil berupa dataframe berisi hingga k rekomendasi film yang paling mirip dengan film referensi.
 
    Hasil dari proses ini ditunjukan pada Gambar berikut.
+   <details>
+        <summary>Lihat Gambar</summary>
+    </details>
+![Pie chart](https://github.com/aziza8/LaporanMLT2/blob/main/hasilcosin.png?raw=true)
 
-2. Colaborative filtering
+3. Collaborative filtering
 
     Implementasi model rekomendasi berbasis neural network yang dinamakan RecommenderNet, menggunakan framework TensorFlow dan Keras. Model ini dirancang untuk mempelajari hubungan antara pengguna dan film berdasarkan data masukan. Pada tahap inisialisasi (__init__), model mendefinisikan beberapa lapisan embedding, yaitu representasi vektor untuk pengguna dan film. Setiap pengguna dan film direpresentasikan dalam ruang vektor berdimensi embedding_size. Lapisan embedding pengguna (user_embedding) dan embedding film (movie_embedding) dirancang untuk mempelajari representasi fitur yang relevan dengan inisialisasi bobot menggunakan metode he_normal dan regularisasi L2 untuk mencegah overfitting. Selain itu, bias untuk pengguna dan film juga dimodelkan dengan lapisan embedding terpisah (user_bias dan movie_bias) untuk menangkap preferensi spesifik.
 
     Metode call digunakan untuk mendefinisikan bagaimana data diproses oleh model. Ketika data masukan diterima, yang berupa pasangan [user_id, movie_id], embedding pengguna diakses melalui self.user_embedding(inputs[:, 0]), dan embedding film diakses melalui self.movie_embedding(inputs[:, 1]). Bias pengguna dan film juga diambil menggunakan cara yang serupa. Model kemudian menghitung nilai dot product antara embedding pengguna dan embedding film, yang mewakili tingkat kesesuaian atau relevansi antara pengguna dan film. Nilai ini ditambahkan dengan bias pengguna dan bias film untuk mendapatkan prediksi akhir. Hasilnya diteruskan melalui fungsi aktivasi sigmoid (tf.nn.sigmoid) untuk memastikan bahwa nilai prediksi berada dalam rentang 0 hingga 1, yang cocok untuk tugas prediksi seperti rating. Model ini memberikan pendekatan fleksibel untuk menangkap hubungan kompleks antara pengguna dan item yang direkomendasikan.
 
-   Gambar xx adalah hasil dari rekomendasi dari sistem yang dibangun.
+   Gambar berikut adalah hasil dari rekomendasi dari sistem yang dibangun.
+    <details>
+        <summary>Lihat Gambar</summary>
+    </details>
+![Pie chart](https://github.com/aziza8/LaporanMLT2/blob/main/sc.png?raw=true)
 
 ## Evaluation
 Dalam proyek ini, evaluasi dilakukan untuk memastikan bahwa rekomendasi yang dihasilkan relevan, akurat, dan memenuhi kebutuhan pengguna. Berikut adalah rincian pendekatan evaluasi yang digunakan:
@@ -250,6 +265,13 @@ Dalam proyek ini, evaluasi dilakukan untuk memastikan bahwa rekomendasi yang dih
 
 2. Root Mean Squared Error (RMSE): Mengukur perbedaan antara rating yang diprediksi dengan rating aktual yang diberikan pengguna.
 
+    Berikut adalah hasil dari evaluasi model proses pelatihan dengan menggunakan RME.
+    <details>
+        <summary>Lihat Gambar</summary>
+    </details>
+
+![Pie chart](https://github.com/aziza8/LaporanMLT2/blob/main/training.png?raw=true)
+   
 
 **Dampak Evaluasi Model Terhadap Business Understanding:**
 
