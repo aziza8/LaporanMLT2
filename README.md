@@ -22,7 +22,8 @@ Dalam industri hiburan digital, platform streaming film menghadapi tantangan bes
     - Membangun Model Rekomendasi yang Memberikan Saran Personalisasi Secara Akurat.
 
 ## Data Understanding
-Untuk membangun sistem rekomendasi yang efektif, penting untuk memahami karakteristik dataset yang akan digunakan. Proyek ini memanfaatkan dua dataset utama: movies.csv dan ratings.csv.
+Untuk membangun sistem rekomendasi yang efektif, penting untuk memahami karakteristik dataset yang akan digunakan. Proyek ini memanfaatkan dua dataset utama: movies.csv dan ratings.csv. Dataset yang digunakan pada projek ini berasal dari **Movie Recommender System Dataset** 
+: (https://www.kaggle.com/datasets/gargmanas/movierecommenderdataset/data)
 
 **Dataset movies**.
 
