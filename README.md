@@ -22,31 +22,67 @@ Dalam industri hiburan digital, platform streaming film menghadapi tantangan bes
     - Membangun Model Rekomendasi yang Memberikan Saran Personalisasi Secara Akurat.
 
 ## Data Understanding
-Untuk membangun sistem rekomendasi yang efektif, penting untuk memahami karakteristik dataset yang akan digunakan. Proyek ini memanfaatkan dua dataset utama: movies.csv dan ratings.csv. Berikut adalah analisis terhadap kedua dataset:
-1. Dataset movies.csv
-Dataset ini berisi informasi tentang film, mencakup:
-- Jumlah Entitas: 9,742 film.
-- Kolom Utama:
-  - movieId: ID unik untuk setiap film.
-  - title: Judul film beserta tahun rilis (contoh: "Toy Story (1995)").
-  - genres: Genre film, dengan kemungkinan beberapa genre dipisahkan oleh tanda | (contoh: "Animation|Children|Comedy").
- 
-2. Dataset ratings.csv
-Dataset ini mencatat interaksi pengguna dengan film melalui penilaian.
-- Jumlah Entitas: 100,836 interaksi pengguna.
-- Kolom Utama:
-  - userId: ID unik pengguna yang memberikan rating.
-  - movieId: ID film yang dirating (menghubungkan dengan dataset movies.csv).
-  - rating: Rating yang diberikan oleh pengguna (skala 0.5 hingga 5.0, kemungkinan increment 0.5).
-  - timestamp: Waktu pemberian rating dalam format UNIX timestamp.
-3.  Analisis Kualitas Data
-    - Missing Values
-        - Dataset `movies.csv` tidak memiliki missing values berdasarkan hasil `movies_df.isna().sum()`.
-        - Dataset `ratings.csv` juga tidak ditemukan missing values (`ratings_df.isna().sum()`).
-    - Duplicate Values
-      - Perintah movies_df.duplicated().sum() digunakan untuk menghitung jumlah baris duplikat dalam DataFrame movies_df.  Fungsi ini mengembalikan sebuah Series Boolean yang menunjukkan apakah setiap baris dalam DataFrame merupakan duplikat dari baris sebelumnya. Baris yang memiliki nilai True adalah duplikat, sementara baris yang False adalah baris yang unik. Secara keseluruhan tidak ada duplicate pada data movies_df.
-      - Perintah ratings_df.duplicated().sum() digunakan untuk menghitung jumlah baris duplikat dalam DataFrame ratings_df, yang biasanya berisi data tentang rating yang diberikan oleh pengguna pada berbagai film. Fungsi ini memeriksa setiap baris dalam DataFrame ratings_df dan mengembalikan sebuah Series Boolean yang menunjukkan apakah baris tersebut duplikat atau tidak. Baris yang dianggap duplikat adalah baris yang memiliki nilai yang sama persis dengan baris sebelumnya (baik itu ID pengguna, ID film, atau rating yang diberikan). Hasilnya adalah True jika baris tersebut duplikat dan False jika tidak. Secara keseluruhan tidak ada duplicate pada data ratings_df.
-    - Proses visualisasi outlier pada kolom rating menggunakan boxplot bertujuan untuk mendeteksi nilai-nilai yang berada di luar rentang yang dianggap normal dalam dataset. Gambar 1 adalah oulier data rating.
+Untuk membangun sistem rekomendasi yang efektif, penting untuk memahami karakteristik dataset yang akan digunakan. Proyek ini memanfaatkan dua dataset utama: movies.csv dan ratings.csv.
+
+**Dataset movies**.
+
+Dataset ini berisi informasi tentang berbagai film yang diidentifikasi berdasarkan ID unik, judul, dan genre yang dimiliki. Berikut adalah penjelasan rinci mengenai dataset ini:
+1. Jumlah Data.
+
+    Dataset terdiri dari:
+   - 9,742 baris, yang merepresentasikan jumlah film dalam dataset.
+   - 3 kolom, masing-masing menyimpan informasi spesifik tentang film, yaitu ID film, judul, dan genre.   
+2. Kondisi Data.
+
+   Analisis kondisi data menunjukkan:
+   - **Missing Values**: Tidak ditemukan nilai yang hilang pada seluruh kolom dalam dataset. Hal ini menunjukkan bahwa dataset lengkap dan tidak memerlukan proses imputasi data.
+   - **Duplikat**: Tidak ada baris duplikat yang terdeteksi dalam dataset, sehingga data ini dapat dianggap unik untuk setiap entri.
+   - Jenis Data:
+     - movieId: Tipe data integer, berisi ID unik yang merepresentasikan setiap film. Kolom ini berfungsi sebagai identifikasi utama untuk setiap entri dalam dataset.
+     - title: Tipe data teks, berisi judul film. Judul ini sering kali disertai dengan tahun perilisan dalam tanda kurung, misalnya "Toy Story (1995)".
+     - genres: Tipe data teks, berisi kategori genre film. Jika sebuah film memiliki lebih dari satu genre, genre tersebut dipisahkan dengan tanda |, misalnya "Adventure|Animation|Children|Comedy|Fantasy".
+3. Uraian seluruh fitur.
+
+    Berikut adalah penjelasan rinci mengenai fitur dalam dataset:
+   - movieId: Kolom ini berisi ID unik untuk setiap film. ID ini digunakan untuk mengidentifikasi setiap film tanpa kemungkinan kebingungan antar entri.
+   - title: Kolom ini menyimpan judul film. Judul sering kali disertai dengan tahun perilisan dalam tanda kurung untuk memberikan konteks waktu kepada pengguna dataset.
+   - genres: Kolom ini berisi informasi tentang genre film. Genre-genre tersebut membantu mengkategorikan film berdasarkan tema atau isi, seperti Action, Drama, Comedy, dan sebagainya. Jika sebuah film termasuk dalam beberapa kategori, semua genre tersebut dicantumkan dalam kolom ini dengan pemisah |.
+     
+Dataset ini menawarkan informasi dasar yang berguna untuk berbagai analisis, seperti eksplorasi film berdasarkan genre, tahun perilisan, atau bahkan identifikasi pola preferensi genre berdasarkan dataset pendukung lainnya. Dataset ini juga sangat cocok untuk proyek-proyek seperti sistem rekomendasi film atau analisis tren di industri perfilman.
+
+**Dataset Ratings**
+
+Dataset ini berisi data penilaian atau rating yang diberikan oleh pengguna terhadap berbagai film. Informasi dalam dataset mencakup identifikasi unik untuk pengguna dan film, skor penilaian, serta waktu pemberian rating. Berikut adalah penjelasan rinci mengenai dataset ini.
+
+1. Jumlah Data
+
+    Dataset ini terdiri dari 100,836 baris, yang masing-masing mewakili interaksi berupa pemberian rating oleh pengguna terhadap film tertentu. Dataset ini juga memiliki 4 kolom, yaitu userId, movieId, rating, dan timestamp, yang memuat informasi utama terkait aktivitas pengguna.
+
+2. Kondisi Data
+
+    Setelah dilakukan analisis, tidak ditemukan adanya nilai yang hilang (missing values) pada seluruh kolom, menunjukkan dataset ini lengkap tanpa perlu proses imputasi. Selain itu, tidak ada baris yang terdeteksi sebagai duplikat, sehingga data dapat dianggap bersifat unik dan tidak redundant.
+Setiap kolom memiliki tipe data yang sesuai dengan isi informasinya:
+    - userId dan movieId adalah tipe integer yang berfungsi sebagai pengenal unik.
+    - rating bertipe float, digunakan untuk menyimpan skor penilaian.
+    - timestamp bertipe integer, menyimpan waktu pemberian rating dalam format Unix timestamp, yang dapat dikonversi menjadi format tanggal standar untuk keperluan analisis waktu.
+
+3. Uraian Seluruh Fitur
+    - userId: Kolom ini berisi ID unik yang merepresentasikan setiap pengguna dalam dataset. Setiap ID adalah pengenal individual, sehingga memungkinkan analisis perilaku atau preferensi pengguna terhadap film.
+    - movieId: Kolom ini berisi ID unik untuk setiap film yang dinilai oleh pengguna. ID ini terhubung dengan entitas film yang dapat digunakan untuk analisis lebih lanjut ketika digabungkan dengan dataset lain, seperti data film (movies.csv).
+    - rating: Kolom ini menyimpan skor penilaian yang diberikan oleh pengguna untuk film tertentu. Skor ini biasanya berada dalam rentang tertentu, misalnya 0.5 hingga 5.0, yang menggambarkan tingkat kepuasan pengguna terhadap film.
+    - timestamp: Kolom ini mencatat waktu pemberian rating dalam format Unix timestamp. Data ini dapat diubah ke format waktu standar untuk analisis yang memerlukan dimensi temporal, seperti tren penilaian atau pola perilaku pengguna berdasarkan waktu.
+      
+Dataset ini sangat bermanfaat untuk keperluan analisis perilaku pengguna, pembuatan sistem rekomendasi film, atau eksplorasi pola penilaian berdasarkan waktu. Informasi yang terkandung cukup kaya untuk mendukung berbagai jenis studi di bidang data analitik atau pembelajaran mesin.
+
+- Missing Values
+  - Dataset `movies.csv` tidak memiliki missing values berdasarkan hasil `movies_df.isna().sum()`.
+  - Dataset `ratings.csv` juga tidak ditemukan missing values (`ratings_df.isna().sum()`).
+- Duplicate Values
+  - Perintah movies_df.duplicated().sum() digunakan untuk menghitung jumlah baris duplikat dalam DataFrame movies_df.  Fungsi ini mengembalikan sebuah Series Boolean yang menunjukkan apakah setiap baris dalam DataFrame merupakan duplikat dari baris sebelumnya. Baris yang memiliki nilai True adalah duplikat, sementara baris yang False adalah baris yang unik. Secara keseluruhan tidak ada duplicate pada data movies_df.
+  - Perintah ratings_df.duplicated().sum() digunakan untuk menghitung jumlah baris duplikat dalam DataFrame ratings_df, yang biasanya berisi data tentang rating yang diberikan oleh pengguna pada berbagai film. Fungsi ini memeriksa setiap baris dalam DataFrame ratings_df dan mengembalikan sebuah Series Boolean yang menunjukkan apakah baris tersebut duplikat atau tidak. Baris yang dianggap duplikat adalah baris yang memiliki nilai yang sama persis dengan baris sebelumnya (baik itu ID pengguna, ID film, atau rating yang diberikan). Hasilnya adalah True jika baris tersebut duplikat dan False jika tidak. Secara keseluruhan tidak ada duplicate pada data ratings_df.
+
+
+- Proses visualisasi outlier pada kolom rating menggunakan boxplot bertujuan untuk mendeteksi nilai-nilai yang berada di luar rentang yang dianggap normal dalam dataset. Gambar 1 adalah oulier data rating. 
     <details>
         <summary>Lihat Gambar</summary>
     </details>
